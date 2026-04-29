@@ -2,7 +2,7 @@
 
 Welcome to the **Camping Spot Finder**. This repository contains the strategic instructions and data structures needed to turn any advanced AI chat agent into an automated off-grid scouting assistant.
 
-Currently optimized for a 3-month overland trip in a 4x4 Tacoma with a Starlink Mini, this system evaluates spots based on a rigorous matrix including cost, water access, beauty, cellular connectivity, and bear risk.
+Currently optimized for overland trips in a 4x4 Tacoma with a Starlink Mini, this system evaluates spots based on a rigorous matrix including cost, water access, beauty, cellular connectivity, and bear risk.
 
 ## **🚀 How to Use (The "No-Code" Workflow)**
 
@@ -39,7 +39,7 @@ The AI will immediately process the request and return the best "Geo-Cluster" (a
 
 ## **💡 Pro-Tip: Filtering Out Old Locations**
 
-As your 3-month trip progresses, you will accumulate dozens of saved YAML files. To keep your AI context lean, cheap, and focused strictly on your *next* destination, you should tell Repomix to ignore regions you've already visited.
+As your trips progress, you will accumulate dozens of saved YAML files. To keep your AI context lean, cheap, and focused strictly on your *next* destination, you should tell Repomix to ignore regions you've already visited.
 
 Open the repomix.config.json file in the root of your repository and add the old target area's path to the customPatterns array under ignore.
 
@@ -60,6 +60,27 @@ For example, to ignore all the spots you already saved in Moab, adjust your conf
 }
 
 *After saving the config, just run repomix again, and those old locations will be cleanly excluded from your new digest\!*
+
+## **🛠️ Personalizing Your Setup (Strategy.yaml)**
+
+The default instructions are tailored for a 4x4 Tacoma with a Starlink Mini. However, you can easily customize the AI's scoring logic to match your specific vehicle and gear\!
+
+Open the strategy/Strategy.yaml file. Here, you can adjust the objective and modify the evaluation\_matrix descriptions and weights.
+
+For example, if you are traveling in a **Tesla** and rely on cellular service rather than Starlink, you might update the criteria like this:
+
+objective: "Scout, evaluate, and organize camping locations near set GPS coordinates for a road trip in a Tesla Model Y."
+
+\# ... inside the evaluation\_matrix / criteria section ...
+
+    \- name: "Connectivity"  
+      weight: 1.0  
+      description: "Cell service viability. 7 is full 5G/LTE, 1 is a complete dead zone."  
+    \- name: "Road Accessibility"  
+      weight: 2.0  
+      description: "Tesla Model Y viability. 1 requires high-clearance 4x4 or is heavily washed out, 7 is fully paved directly to the spot."
+
+*Once you save your changes, just run repomix again to update your context digest with your newly personalized strategy\!*
 
 ## **⚠️ Under the Hood: The 95% Solution**
 

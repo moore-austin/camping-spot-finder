@@ -82,6 +82,10 @@ objective: "Scout, evaluate, and organize camping locations near set GPS coordin
 
 *Once you save your changes, just run repomix again to update your context digest with your newly personalized strategy\!*
 
+## ⚠️ Manual GPS Coordinate Verification
+I recommend verifying gps coordinates using the AI generated links (which recently only sometimes seem to break). The coordinates themselves tend to be off by a few miles as the precision tends to get hallucinated by most models.
+
+
 ## **⚠️ Under the Hood: The 95% Solution**
 
 **Note on LIXA Architecture:** If you browse the repository, you will notice references to the **LIXA** (LLM Interactive Execution Agent) framework, Strategy.yaml, and interface.py.

@@ -1,0 +1,12 @@
+graph TD
+    A[Client Request] -->|"Provides Anchor GPS Coordinates & Target Area"| B(ClusterBoundaryManager)
+    B -->|"Calculates 5-Mile Driving Radius Box"| C(SiteDiscoveryEngine)
+    C -->|"Fetches Raw Public Land Data"| D{SiteEvaluator}
+    
+    D -->|"Scores: Beauty, Water, Privacy"| E(ScoringMatrix)
+    D -->|"Scores: Cost, Openness"| E
+    D -->|"Scores: Road Access, Bear Risk, Connectivity"| E
+    
+    E -->|"Applies 0.5x to 3.0x Weights"| F(WeightedCompositeGenerator)
+    F -->|"Compiles Site Data"| G(YamlStorageBroker)
+    G -->|"Writes to src/spots/target_area/cluster_name/site_name.yaml"| H[Persistent Storage]

@@ -1,0 +1,11 @@
+module_name: camping-spot-finder
+current_phase: STRATEGY
+active_agent: strategist
+focus_file: null
+last_context_snapshot: Module Initialized. Waiting for Strategy.
+task_queue: []
+budget:
+  daily_limit_usd: 5.0
+  total_allocated_usd: 2.0
+  current_spend_usd: 0.0
+blocker_reason: null

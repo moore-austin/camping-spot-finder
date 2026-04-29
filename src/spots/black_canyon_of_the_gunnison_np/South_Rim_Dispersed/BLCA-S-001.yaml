@@ -1,0 +1,21 @@
+site_id: "BLCA-S-001"
+site_name: "Black Canyon Dispersed Camping"
+jurisdiction: "BLM"
+coordinates:
+  latitude: 38.53278352
+  longitude: -107.71693182
+raw_ratings:
+  cost: 7
+  water_closeness: 1
+  beauty: 6
+  location_closeness: 7
+  privacy: 5
+  number_of_spots: 6
+  openness: 7
+  bear_risk: 5
+  connectivity: 6
+  road_accessibility: 4
+weighted_total: 70.0
+summary: "Cost is $0. Wide open BLM land nestled in the trees just outside the south rim entrance. Easy 4x4 access, great Starlink visibility, but completely dry—bring all your own water."
+reference_links:
+  - "https://thedyrt.com/camping/colorado/blm-near-black-canyon-dispersed"

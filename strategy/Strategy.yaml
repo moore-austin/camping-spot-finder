@@ -1,0 +1,53 @@
+# Strategy
+> **Owner:** Strategist
+> **Status:** Active
+
+module_name: camping-spot-finder
+objective: "Scout, evaluate, and organize camping locations near set GPS coordinates and National Parks for a 3-month overland trip."
+
+architectural_rules:
+  output_structure: "Flat directory of individual site YAML files, organized into target area and parent Geo-Cluster folders (e.g., src/spots/[target_area]/[cluster_name]/site_name.yaml)."
+  search_boundaries: "Strict GPS bounding boxes (min/max Lat/Long) to anchor searches to specific public lands, bounding searches to a 5-mile driving radius."
+  verification: "Every evaluated site must include a list of reference website links (e.g., iOverlander, Campendium, Recreation.gov) to allow for user confirmation of site details."
+
+evaluation_matrix:
+  scale: "1 to 7 (1 = worst/lowest, 7 = best/highest)"
+  criteria:
+    - name: "Cost"
+      weight: 3.0
+      description: "7 is free, 3 is ~$15, 1 is $30+."
+    - name: "Closeness to Potable Water"
+      weight: 2.0
+      description: "Fresh streams/lakes preferred for Grayl water filtration."
+    - name: "Beauty of Nature"
+      weight: 2.0
+    - name: "Closeness to Set Location"
+      weight: 1.0
+    - name: "Privacy"
+      weight: 1.0
+    - name: "Number of Spots"
+      weight: 1.0
+      description: "Relative comparison to other spots in the cluster."
+    - name: "Openness"
+      weight: 1.0
+      description: "7 is completely open BLM land, 1 is strict reserve-only."
+    - name: "Wildlife / Bear Risk"
+      weight: 1.0
+      description: "7 is minimal risk, 1 is high grizzly/predator activity requiring strict protocols."
+    - name: "Connectivity"
+      weight: 0.5
+      description: "Starlink Mini viability. 7 is wide open sky, 1 is deep canyon/heavy canopy."
+    - name: "Road Accessibility"
+      weight: 0.5
+      description: "4x4 Tacoma viability. 1 is extremely washed out or extreme rock-crawling only."
+
+scoring_logic:
+  raw_score: "Sum of all base 1-7 ratings."
+  weighted_total: "Sum of all ratings multiplied by their respective weights."
+  sorting: "Sites within a Geo-Cluster folder are ranked primarily by weighted_total."
+
+definition_of_done:
+  - "The system accepts a target location and generates a bounded Geo-Cluster folder."
+  - "Discovered sites are saved as individual, machine-readable YAML files utilizing the path src/spots/[target_area]/[cluster_name]/site_name.yaml."
+  - "Each site strictly implements the weighted evaluation matrix."
+  - "Each site explicitly includes a list of valid reference web links."

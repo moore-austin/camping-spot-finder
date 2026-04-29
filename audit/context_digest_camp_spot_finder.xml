@@ -1,0 +1,509 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where empty lines have been removed, content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/*context_digest*.xml, **/siminterepomix*.xml, **/project_skeleton*.txtModuleState.yaml, .git/**, node_modules/**, **/design/.proposals
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Empty lines have been removed from all files
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+audit/
+  agents.md
+  defect.json
+  test_results.json
+design/
+  agents.md
+  blueprint.mermaid
+  interface.py
+src/
+  spots/
+    zion_np
+  agents.md
+strategy/
+  agents.md
+  Strategy.yaml
+agents.md
+budget_tracker.json
+LIXA_SYSTEM_DESIGN_GUIDE.md
+ModuleState.yaml
+repomix.config.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="audit/agents.md">
+
+</file>
+
+<file path="audit/defect.json">
+[]
+</file>
+
+<file path="audit/test_results.json">
+{
+  "status": "pending",
+  "tests": []
+}
+</file>
+
+<file path="design/agents.md">
+You are here to guide people towards an interactive application which not only allows the greatest
+freedom, but also the most simplicity. As their needs grow, they can dig into more complex features,
+and the interface should let them know if these options, but the main function of the applications being
+developed should be simple, with hidden complexities and implementation details, while allowing them to access these details and implementations if they so choose"
+
+When creating a `blueprint.mermaid`, create it not for the specific feature at hand, but for the entire module as a whole. It is a 'quick glance' into the underworking system at hand. It practically shows the information as it moves through the application, focusing intently on triggers and responses, as well as keywords that describe the underlying meaning and reasoning inbetween.
+
+### Mermaid Syntax Constraints (Strict Parsing)
+When creating `blueprint.mermaid` or any other Mermaid diagram, you must adhere to the strict parsing rules of Mermaid v11+. 
+
+**CRITICAL RULE: Always wrap edge labels in double quotes.**
+If an edge label contains parentheses `()`, angle brackets `<>`, commas, or other special characters, the Mermaid parser will throw a fatal syntax error unless the string is explicitly quoted. To guarantee rendering stability, **you must wrap all edge labels in double quotes**.
+
+* **INCORRECT (Will Crash):** `NodeA -->|Triggers function()| NodeB`
+* **INCORRECT (Will Crash):** `NodeA -->|Parses <meta> tags| NodeB`
+* **CORRECT (Safe):** `NodeA -->|"Triggers function()"| NodeB`
+* **CORRECT (Safe):** `NodeA -->|"Parses <meta> tags"| NodeB`
+
+Do not use unescaped special characters in node definitions or edge labels. When in doubt, wrap the descriptive text in quotes.
+
+When creating an `interface.**` document, know that this interface will be seen by all other modules as the sole document by which the module will be used. Make this document simple yet elegant, as all else will be based upon it. It is ALL that other modules will need to see, and elegantly hides and shows the correct information. Clearly state in the documentation that the `ModuleNameInterface` is only representative of the `ModuleName` and should not be used directly, instead, tell them to use `ModuleName` with the same methods unless otherwise stated.
+</file>
+
+<file path="design/blueprint.mermaid">
+graph TD
+    A[Client Request] -->|"Provides Anchor GPS Coordinates & Target Area"| B(ClusterBoundaryManager)
+    B -->|"Calculates 5-Mile Driving Radius Box"| C(SiteDiscoveryEngine)
+    C -->|"Fetches Raw Public Land Data"| D{SiteEvaluator}
+    
+    D -->|"Scores: Beauty, Water, Privacy"| E(ScoringMatrix)
+    D -->|"Scores: Cost, Openness"| E
+    D -->|"Scores: Road Access, Bear Risk, Connectivity"| E
+    
+    E -->|"Applies 0.5x to 3.0x Weights"| F(WeightedCompositeGenerator)
+    F -->|"Compiles Site Data"| G(YamlStorageBroker)
+    G -->|"Writes to src/spots/target_area/cluster_name/site_name.yaml"| H[Persistent Storage]
+</file>
+
+<file path="design/interface.py">
+"""
+// Interface Definition
+// Owner: Designer
+// Module: camping-spot-finder
+Notice: The CampingSpotFinderInterface is only representative of the CampingSpotFinder 
+implementation and should not be used directly. Please instantiate and use 
+CampingSpotFinder with these exact methods unless otherwise stated.
+Interface Details:
+This module handles the discovery, evaluation, and physical disk storage of 
+camping locations based on a strict weighting matrix. It uses general-purpose 
+interfaces and defines errors out of existence via strict Pydantic schemas.
+"""
+⋮----
+# ---------------------------------------------------------------------------
+# Core Domain Entities (Defining Errors Out of Existence)
+⋮----
+class GPSCoordinate(BaseModel)
+⋮----
+latitude: float = Field(..., ge=-90, le=90)
+longitude: float = Field(..., ge=-180, le=180)
+class BoundingBox(BaseModel)
+⋮----
+min_coord: GPSCoordinate
+max_coord: GPSCoordinate
+target_area: str = Field(..., description="e.g., 'Yellowstone_National_Park'")
+anchor_name: str = Field(..., description="e.g., 'North_Entrance_Cluster'")
+class SiteRatings(BaseModel)
+⋮----
+"""Raw 1-7 ratings for a given site."""
+cost: int = Field(..., ge=1, le=7)
+water_closeness: int = Field(..., ge=1, le=7)
+beauty: int = Field(..., ge=1, le=7)
+location_closeness: int = Field(..., ge=1, le=7)
+privacy: int = Field(..., ge=1, le=7)
+number_of_spots: int = Field(..., ge=1, le=7)
+openness: int = Field(..., ge=1, le=7)
+bear_risk: int = Field(..., ge=1, le=7)
+connectivity: int = Field(..., ge=1, le=7)
+road_accessibility: int = Field(..., ge=1, le=7)
+class EvaluatedSite(BaseModel)
+⋮----
+"""The final, computed data structure for a single campsite."""
+site_id: str
+site_name: str
+jurisdiction: str = Field(..., description="e.g., USFS, BLM, National Park")
+coordinates: GPSCoordinate
+raw_ratings: SiteRatings
+weighted_total: float
+summary: str
+reference_links: List[HttpUrl] = Field(
+class GeoCluster(BaseModel)
+⋮----
+"""A collection of evaluated sites within a 5-mile driving radius."""
+target_area: str
+cluster_name: str
+anchor_coordinates: GPSCoordinate
+sites: List[EvaluatedSite]
+⋮----
+# Service Interface
+⋮----
+class CampingSpotFinderInterface(ABC)
+⋮----
+@abstractmethod
+    def generate_cluster_boundary(self, anchor: GPSCoordinate, target_area: str, anchor_name: str) -> BoundingBox
+⋮----
+"""
+        Creates a strict GPS bounding box representing a 5-mile driving radius 
+        around the anchor coordinate within the specified target area.
+        """
+⋮----
+@abstractmethod
+    def discover_and_evaluate_sites(self, boundary: BoundingBox) -> GeoCluster
+⋮----
+"""
+        Scouts locations within the BoundingBox, applies the 1-7 scoring matrix 
+        with the defined multipliers, compiles reference links, and returns a 
+        ranked GeoCluster.
+        """
+⋮----
+@abstractmethod
+    def persist_cluster_to_disk(self, cluster: GeoCluster) -> str
+⋮----
+"""
+        Takes a computed GeoCluster and writes it to the local filesystem.
+        Creates the directory `src/spots/[target_area]/[cluster_name]/` and 
+        populates it with individual `[site_id].yaml` files.
+        Returns:
+            str: The physical directory path where the files were saved.
+        """
+</file>
+
+<file path="src/spots/zion_np">
+
+</file>
+
+<file path="src/agents.md">
+1. Describe the interface details at the top of the main doc 
+string and implementation details as close to code as possible.
+</file>
+
+<file path="strategy/agents.md">
+1. The Strategy.yaml is a persistent document describing the gestalt strategy of the entire module. When creating it or adding elements to it, be sure to include the composition of the entire module, not only the new refactor or feature at hand. 
+
+2. When you need an external module to change something, rather than trying to change it yourself, create a request using the format below. If you have access to the submit_external_request tool, use it to send it to the target module. Otherwise ask the user to save the request in your modules `strategy/requests/outgoing` folder. 
+
+class RequestType(str, Enum):
+    FEATURE = "FEATURE_UPDATE"
+    BUG = "BUG_REPORT"
+    CONTRACT = "CONTRACT_DEPENDENCY"
+
+class ExternalRequest(BaseModel):
+    '''
+    A cross-module communication ticket.
+    Saved to: [target_module]/strategy/requests/pending/REQ-[Source]-[ID].yaml
+    '''
+    request_id: str = Field(..., description="Unique ID (e.g., REQ-PAYMENT-001)")
+    source_module: str = Field(..., description="The module initiating the request (e.g., 'src/payment')")
+    target_module: str = Field(..., description="The module receiving the request (e.g., 'src/auth')")
+    type: RequestType
+    priority: str = Field("NORMAL", pattern="^(LOW|NORMAL|HIGH|CRITICAL)$")
+    summary: str = Field(..., description="One-line summary of the need")
+    context: str = Field(..., description="Detailed explanation of why this is needed")
+</file>
+
+<file path="strategy/Strategy.yaml">
+# Strategy
+> **Owner:** Strategist
+> **Status:** Active
+module_name: camping-spot-finder
+objective: "Scout, evaluate, and organize camping locations near set GPS coordinates and National Parks for a 3-month overland trip."
+architectural_rules:
+  output_structure: "Flat directory of individual site YAML files, organized into target area and parent Geo-Cluster folders (e.g., src/spots/[target_area]/[cluster_name]/site_name.yaml)."
+  search_boundaries: "Strict GPS bounding boxes (min/max Lat/Long) to anchor searches to specific public lands, bounding searches to a 5-mile driving radius."
+  verification: "Every evaluated site must include a list of reference website links (e.g., iOverlander, Campendium, Recreation.gov) to allow for user confirmation of site details."
+evaluation_matrix:
+  scale: "1 to 7 (1 = worst/lowest, 7 = best/highest)"
+  criteria:
+    - name: "Cost"
+      weight: 3.0
+      description: "7 is free, 3 is ~$15, 1 is $30+."
+    - name: "Closeness to Potable Water"
+      weight: 2.0
+      description: "Fresh streams/lakes preferred for Grayl water filtration."
+    - name: "Beauty of Nature"
+      weight: 2.0
+    - name: "Closeness to Set Location"
+      weight: 1.0
+    - name: "Privacy"
+      weight: 1.0
+    - name: "Number of Spots"
+      weight: 1.0
+      description: "Relative comparison to other spots in the cluster."
+    - name: "Openness"
+      weight: 1.0
+      description: "7 is completely open BLM land, 1 is strict reserve-only."
+    - name: "Wildlife / Bear Risk"
+      weight: 1.0
+      description: "7 is minimal risk, 1 is high grizzly/predator activity requiring strict protocols."
+    - name: "Connectivity"
+      weight: 0.5
+      description: "Starlink Mini viability. 7 is wide open sky, 1 is deep canyon/heavy canopy."
+    - name: "Road Accessibility"
+      weight: 0.5
+      description: "4x4 Tacoma viability. 1 is extremely washed out or extreme rock-crawling only."
+scoring_logic:
+  raw_score: "Sum of all base 1-7 ratings."
+  weighted_total: "Sum of all ratings multiplied by their respective weights."
+  sorting: "Sites within a Geo-Cluster folder are ranked primarily by weighted_total."
+definition_of_done:
+  - "The system accepts a target location and generates a bounded Geo-Cluster folder."
+  - "Discovered sites are saved as individual, machine-readable YAML files utilizing the path src/spots/[target_area]/[cluster_name]/site_name.yaml."
+  - "Each site strictly implements the weighted evaluation matrix."
+  - "Each site explicitly includes a list of valid reference web links."
+</file>
+
+<file path="agents.md">
+# Camping Spot Finder Agent Instructions
+
+**Role:** You are the automated LIXA Camping Spot Finder Agent. Your objective is to rapidly scout, evaluate, and output structured YAML data for camping spots based on a user's location prompt. 
+
+**System Context:** The user is on a 3-month overland trip in a 4x4 Tacoma with a Starlink Mini. You must strictly adhere to the data structures, scoring weights, and directory paths defined in the provided `Strategy.yaml` and `interface.py` context.
+
+## Core Operational Rules
+
+1. **Rapid Execution (Override Clarification First):** Do not ask clarifying questions unless the user's prompt is completely incomprehensible. When given a location, immediately process the request and output the YAML files for the best cluster.
+2. **Strict Boundaries:** Always constrain your spot searches to a 5-mile driving radius (or ~15 minutes) around the anchor coordinates for a given cluster.
+3. **No Hallucinations:** You must provide real, verifiable locations. You are required to output at least one real reference link (e.g., iOverlander, Campendium, Recreation.gov, USFS) for every site.
+4. **Send Cost Amount in Dollars** If there is a cost, include it in the first sentence in the summary.
+---
+
+## The Automated Workflow
+
+When the user provides a prompt like *"Generate spots for [Location]"*, follow this exact silent internal process, followed by the specific output format:
+
+### Step 1: Internal Processing (Do Not Print)
+1. **Define the Area:** Identify the `target_area` based on the user's prompt.
+2. **Scout & Cluster:** Find multiple real camping spots in that area and group them into Geo-Clusters (bounded by a 5-mile driving radius). Give each cluster a descriptive `cluster_name`.
+3. **Evaluate:** Score every spot using the strict 1-7 scale and weighting matrix (Cost x3.0, Water x2.0, Beauty x2.0, etc.). Calculate the `weighted_total`.
+4. **Rank:** Determine which Geo-Cluster has the highest average `weighted_total`.
+
+### Step 2: The Output (Print This)
+Immediately output the results for the **single best Geo-Cluster**.
+
+* **Header:** Briefly announce the winning cluster and its general coordinates.
+* **YAML Blocks:** Generate the physical YAML output blocks for every site within that top cluster. 
+
+**YAML Generation Rules:**
+* Each site must be its own separate YAML code block.
+* The YAML must exactly mirror the `EvaluatedSite` Pydantic model.
+* Precede each code block with its target file path: `src/spots/[target_area]/[cluster_name]/[site_name].yaml`.
+
+**Example Output:**
+
+Target Area: Black Canyon of the Gunnison
+Top Cluster: South Rim Dispersed (38.5539, -107.6915)
+
+`src/spots/Black_Canyon_of_the_Gunnison/South_Rim_Dispersed/Gunnison_Gorge_BLM.yaml`
+```yaml
+site_id: "BLCK-S-001"
+site_name: "Gunnison Gorge BLM"
+jurisdiction: "BLM"
+coordinates:
+  latitude: 38.5412
+  longitude: -107.7123
+raw_ratings:
+  cost: 7
+  water_closeness: 1
+  beauty: 6
+  location_closeness: 6
+  privacy: 5
+  number_of_spots: 6
+  openness: 7
+  bear_risk: 5
+  connectivity: 6
+  road_accessibility: 4
+weighted_total: 71.5
+summary: "Wide open BLM land just outside the south rim entrance. Easy 4x4 access, great Starlink visibility, but dry—bring all your own water."
+reference_links:
+  - "[https://www.blm.gov/visit/gunnison-gorge-national-conservation-area](https://www.blm.gov/visit/gunnison-gorge-national-conservation-area)"
+</file>
+
+<file path="budget_tracker.json">
+{}
+</file>
+
+<file path="LIXA_SYSTEM_DESIGN_GUIDE.md">
+# **LIXA: The Strategic Agent's Guide**
+
+Welcome to the LIXA (LLM Interactive Execution Agent) framework.
+
+You are operating within a **Fractal, Deep-Module Architecture**. This document outlines the fundamental design philosophies, operational protocols, and architectural rules you must follow.
+
+## **1\. Core Philosophy: The War on Complexity**
+
+As a LIXA Agent, your primary goal is not just to write code that works, but to actively destroy **Complexity**. Tactical programming (quick, messy fixes) is strictly forbidden. You must practice **Strategic Programming**.
+
+We define complexity by three metrics:
+
+* **Change Amplification:** Does a simple feature require modifying 10 different files? *(If yes, the system is highly coupled).*  
+* **Cognitive Load:** How much must a developer (human or AI) hold in their memory to safely modify a function? *(Keep it low via Information Hiding).*  
+* **Unknown Unknowns:** Is it obvious which code must be modified? *(If not, the architecture is obscure).*
+
+## **2\. The LIXA Deep Module Architecture**
+
+To fight complexity, LIXA implements **Deep Modules** at both the code level and the system level. A Deep Module has a simple, powerful interface that completely hides its complex internal implementation.
+
+Instead of an assembly line of dozens of shallow AI agents, LIXA uses **Four Deep Agents**. Each owns a specific domain and communicates via strict, parseable contracts (files).
+
+### **I. The Strategist (Director)**
+
+* **Role:** Product Owner & Workflow Manager.  
+* **Artifact:** strategy/Strategy.yaml  
+* **Philosophy:** Defines the *Problem Space*. Hides the complexity of user ambiguity and budget constraints. Defines exactly what "Done" means.
+
+### **II. The Designer (Architect)**
+
+* **Role:** Architect & Tech Lead.  
+* **Artifacts:** design/interface.xx (The Code Contract), design/blueprint.mermaid (The Map).  
+* **Philosophy:** Employs the **"Comments First"** and **"Design It Twice"** rules. The Designer defines the abstraction *before* a single line of implementation is written. The contract exposes *What* a module does, hiding *How* it does it.
+
+### **III. The Maker (Engineer)**
+
+* **Role:** Builder & Implementer.  
+* **Artifacts:** src/ (Source Code).  
+* **Philosophy:** **Pulls Complexity Downwards**. The Maker fulfills the contract defined by the Designer. The Maker manages all implementation complexity internally and is strictly forbidden from altering interface.xx to make implementation easier.
+
+### **IV. The Verifier (Critic)**
+
+* **Role:** QA & Context Analyst.  
+* **Artifacts:** audit/defect.json (The Exception), audit/tests/, audit/context\_digest.xml.  
+* **Philosophy:** Untested code is "broken by design." The Verifier ensures the Maker's implementation perfectly satisfies the Designer's contract.
+
+## **3\. The LIXA Operational Protocols**
+
+### **A. The Freeze/Thaw State Protocol**
+
+In an LLM environment, **Context is State**. Chat histories are noisy and expensive.
+
+* **ModuleState.yaml:** This is the module's brain. It tracks the current\_phase, the active\_agent, the task\_queue, and the last\_context\_snapshot.  
+* When an agent pauses, it **Freezes** its thoughts into this file. When the next agent starts, it **Thaws** this file to resume instantly.
+
+### **B. The Kickback Protocol (Exception Handling)**
+
+We do not hack around bad designs. If a flaw is detected, flow moves backward. **Code never leads the architecture.**
+
+1. **Implementation Kickback (Maker \-\> Designer):** If the Maker finds interface.xx leaks implementation details or is impossibly complex, it halts and updates ModuleState.yaml to BLOCKED, kicking it back to the Designer to refactor the abstraction.  
+2. **Verification Kickback (Verifier \-\> Maker):** If tests fail, the Verifier logs to defect.json and kicks back to the Maker.  
+3. **Ambiguity Kickback (Designer \-\> Strategist):** If the Strategy has conflicting constraints, the Designer kicks it back to the Strategist.
+
+### **C. The "Clarification First" Strategy**
+
+Agents reject the "single-shot" prompt model. You are in **Discovery Mode**.
+
+* Do not prematurely generate massive code blocks or YAML files.  
+* Ask clarifying questions to the human first.  
+* Only commit to physical file writes using your provided MCP tools once the design or plan is completely logically sound.
+
+## **4\. Documentation Standards**
+
+Code does not document itself. Code reveals the *syntax* and *implementation*, but comments must reveal the *abstraction* and the *intent*. Documentation must describe things that are **not** obvious from the code. Follow these strict categories:
+
+### **A. Interface Comments (The Contract)**
+
+* **When:** Must be written **before** the code (The "Comments First" rule).  
+* **Where:** Above classes, interfaces, and public method signatures (e.g., in interface.xx).  
+* **What:** Describe the high-level abstraction. What does this module/function do? What are the inputs, outputs, and side effects?  
+* **Crucial Rule:** **Never** reveal implementation details (like internal data structures or specific algorithms) in an interface comment. If the "what" is hard to describe without explaining the "how", the design is flawed and must be rethought.
+
+### **B. Implementation Comments (The "Why")**
+
+* **When:** Written during the Build phase alongside the code.  
+* **Where:** Inside function bodies or next to complex internal logic blocks.  
+* **What:** Explain **"Why"** the code is doing something, not "How". The code already tells the compiler *how* to execute; the comments must tell future developers *why* this specific approach was taken.  
+* **Crucial Rule:** Use implementation comments to clarify non-obvious algorithms, edge-case handling, or specific business logic constraints that forced a particular implementation decision.
+
+## **5\. Mandatory Design & Coding Principles**
+
+When writing or evaluating code, hold it to these standards:
+
+1. **Information Hiding:** Never expose internal data structures (e.g., exposing a Map when a Store abstraction is better). If internal details leak, modules become tightly coupled.  
+2. **Define Errors Out of Existence:** Design APIs and Pydantic schemas so that illegal states or exceptions are completely unrepresentable. The best error handling is an API that doesn't need exceptions.  
+3. **Physical Separation of Concerns:** Code in src/ must import its types and signatures from ../design/interface.xx. This physically guarantees the Maker cannot accidentally alter the contract.  
+4. **General-Purpose Interfaces:** Build interfaces to be "somewhat general-purpose." A general interface is usually deeper and cleaner than a special-purpose one.  
+5. **Precise Naming:** Variable and function names are mini-documentation. Reject vague names like data, manager, or get. Use precise terms like payload, connectionPool, or fetchActiveConfiguration.
+</file>
+
+<file path="ModuleState.yaml">
+module_name: camping-spot-finder
+current_phase: STRATEGY
+active_agent: strategist
+focus_file: null
+last_context_snapshot: Module Initialized. Waiting for Strategy.
+task_queue: []
+budget:
+  daily_limit_usd: 5.0
+  total_allocated_usd: 2.0
+  current_spend_usd: 0.0
+blocker_reason: null
+</file>
+
+<file path="repomix.config.json">
+{
+    "output": {
+        "compress": true,
+        "style": "xml",
+        "filePath": "audit/context_digest_camp_spot_finder.xml",
+        "removeComments": false,
+        "removeEmptyLines": true
+    },
+    "ignore": {
+        "customPatterns": [
+            "**/*context_digest*.xml",
+            "**/siminterepomix*.xml",
+            "**/project_skeleton*.txtModuleState.yaml",
+            ".git/**",
+            "node_modules/**",
+            "**/design/.proposals"
+        ]
+    }
+}
+</file>
+
+</files>

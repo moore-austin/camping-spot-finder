@@ -1,0 +1,21 @@
+site_id: "BLCA-S-002"
+site_name: "South Rim Campground"
+jurisdiction: "NPS"
+coordinates:
+  latitude: 38.5539
+  longitude: -107.6915
+raw_ratings:
+  cost: 3
+  water_closeness: 4
+  beauty: 6
+  location_closeness: 7
+  privacy: 3
+  number_of_spots: 7
+  openness: 2
+  bear_risk: 4
+  connectivity: 5
+  road_accessibility: 7
+weighted_total: 58.0
+summary: "Cost is $20 to $34 per night. Official park campground right on the rim with great paved access and 88 sites, though some sections may be under rehabilitation. Sites are close together and shaded by scrub oak, offering unbeatable proximity to canyon rim hikes."
+reference_links:
+  - "https://www.nps.gov/blca/planyourvisit/camp_southrim.htm"

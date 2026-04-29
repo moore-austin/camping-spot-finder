@@ -1,0 +1,19 @@
+{
+    "output": {
+        "compress": true,
+        "style": "xml",
+        "filePath": "audit/context_digest_camp_spot_finder.xml",
+        "removeComments": false,
+        "removeEmptyLines": true
+    },
+    "ignore": {
+        "customPatterns": [
+            "**/*context_digest*.xml",
+            "**/siminterepomix*.xml",
+            "**/project_skeleton*.txtModuleState.yaml",
+            ".git/**",
+            "node_modules/**",
+            "**/design/.proposals"
+        ]
+    }
+}

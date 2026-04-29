@@ -1,0 +1,21 @@
+site_id: "BLCA-S-003"
+site_name: "East Portal Campground"
+jurisdiction: "NPS / Curecanti NRA"
+coordinates:
+  latitude: 38.5430
+  longitude: -107.6660
+raw_ratings:
+  cost: 3
+  water_closeness: 7
+  beauty: 7
+  location_closeness: 5
+  privacy: 4
+  number_of_spots: 3
+  openness: 2
+  bear_risk: 4
+  connectivity: 1
+  road_accessibility: 2
+weighted_total: 56.5
+summary: "Cost is $20 per night. Stunning riverside canyon-bottom camping accessed via a very steep 16% grade road from the South Rim. Starlink is impossible here due to deep canyon walls, but water access along the Gunnison River is superb."
+reference_links:
+  - "https://www.nps.gov/blca/planyourvisit/camping.htm"
